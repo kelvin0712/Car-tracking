@@ -1,5 +1,6 @@
 import React from 'react';
 import SearchBox from './components/SearchBox';
+import Map from './components/map/map';
 
 import './App.css';
 import { searchByName, HistoryRecord, searchByVehicle } from './api';
@@ -16,11 +17,18 @@ class App extends React.Component<{}, {
     this.setState({ results })
   }
 
+  componentDidMount() {
+   
+  }
+
   render() {
-    return <div className='vertical-list'>
-      <SearchBox onQuery={this.handleOnQuery} />
-      <Results historyEntries={this.state.results} />
-    </div>
+    return (
+      <div className='vertical-list'>
+        <SearchBox onQuery={this.handleOnQuery} />
+        <Results historyEntries={this.state.results} />  
+        <Map isMarkerShown  />  
+      </div>
+    )
   }
 }
 /**

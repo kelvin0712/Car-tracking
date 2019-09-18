@@ -31,8 +31,6 @@ exports.searchByName = name =>
     });
   });
 
-exports.searchByName("kelvin").then(console.log);
-
 exports.searchByVehicle = vehicleId =>
   new Promise((resolve, reject) => {
     pool.connect(async (err, client, done) => {

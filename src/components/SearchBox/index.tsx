@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import './searchBox.styles.scss';
 
 export default class SearchBox extends React.Component<{
   onQuery(query: string): void
