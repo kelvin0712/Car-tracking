@@ -1,82 +1,48 @@
-exports.searchByName = name => {
-  return [
-    {
-      driverId: 1,
-      driverName: "Kelvin",
-      vehicleId: "vehicle1",
-      coordinates: [-15.23525, 15.22154],
-      time: new Date()
-    },
-    {
-      driverName: "Kelvin",
-      vehicleId: "vehicle1",
-      coordinates: [-15.23525, 15.22154],
-      time: new Date()
-    },
-    {
-      driverName: "Kelvin",
-      vehicleId: "vehicle1",
-      coordinates: [-15.23525, 15.22154],
-      time: new Date()
-    },
-    {
-      driverName: "Kelvin",
-      vehicleId: "vehicle1",
-      coordinates: [-15.23525, 15.22154],
-      time: new Date()
-    },
-    {
-      driverName: "Kelvin",
-      vehicleId: "vehicle1",
-      coordinates: [-15.23525, 15.22154],
-      time: new Date()
-    },
-    {
-      driverName: "Kelvin",
-      vehicleId: "vehicle1",
-      coordinates: [-15.23525, 15.22154],
-      time: new Date()
-    },
-    {
-      driverName: "Kelvin",
-      vehicleId: "vehicle1",
-      coordinates: [-15.23525, 15.22154],
-      time: new Date()
-    }
-  ];
+const pg = require("pg");
+const config = {
+  user: "postgres",
+  database: "postgres",
+  password: "changeme",
+  port: 5432
 };
 
-exports.searchByVehicle = vehicleId => {
-  return [
-    {
-      driverName: "Kelvin",
-      vehicleId: "truck1",
-      coordinates: [-15.23525, 15.22154],
-      time: new Date()
-    },
-    {
-      driverName: "Kelvin",
-      vehicleId: "truck1",
-      coordinates: [-15.23525, 15.22154],
-      time: new Date()
-    },
-    {
-      driverName: "Kelvin",
-      vehicleId: "truck1",
-      coordinates: [-15.23525, 15.22154],
-      time: new Date()
-    },
-    {
-      driverName: "Kelvin",
-      vehicleId: "truck1",
-      coordinates: [-15.23525, 15.22154],
-      time: new Date()
-    },
-    {
-      driverName: "Kelvin",
-      vehicleId: "truck1",
-      coordinates: [-15.23525, 15.22154],
-      time: new Date()
-    }
-  ];
-};
+const pool = new pg.Pool(config);
+
+// pool shutdown
+// pool.end()
+
+exports.searchByName = name =>
+  new Promise((resolve, reject) => {
+    pool.connect(async (err, client, done) => {
+      if (err) {
+        reject(err);
+
+        return done();
+      }
+      const result = await client.query(`
+      SELECT *
+      WHERE drivername like ${name}
+      FROM historyrecord
+    `);
+
+      resolve(result);
+      done();
+    });
+  });
+
+exports.searchByVehicle = vehicleId =>
+  new Promise((resolve, reject) => {
+    pool.connect(async (err, client, done) => {
+      if (err) {
+        reject(err);
+
+        return done();
+      }
+      const result = await client.query(
+        `SELECT * WHERE vehicleid like ${vehicleId} FROM historyrecord`
+      );
+
+      resolve(result);
+      done();
+    });
+  });

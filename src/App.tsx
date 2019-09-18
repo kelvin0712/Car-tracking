@@ -2,7 +2,7 @@ import React from 'react';
 import SearchBox from './components/SearchBox';
 
 import './App.css';
-import { searchByName, HistoryRecord } from './api';
+import { searchByName, HistoryRecord, searchByVehicle } from './api';
 
 class App extends React.Component<{}, {
   results: HistoryRecord[]
