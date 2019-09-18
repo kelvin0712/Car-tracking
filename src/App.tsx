@@ -23,15 +23,22 @@ class App extends React.Component<{}, {
     </div>
   }
 }
-
+/**
+ * Display details of one history event
+ * @params historyEntries an array of history events
+ */
 const Results = (props: {
   historyEntries: HistoryRecord[]
-}) => <div>
-  {props.historyEntries.map(entry => <HistoryListItem {...entry} />)}
-</div>
+}) => {
+  console.log(props.historyEntries)
+
+  return <div>
+    {props.historyEntries.map(entry => <HistoryListItem {...entry} />)}
+  </div>
+}
 
 const HistoryListItem = (props: HistoryRecord) => {
-  return <div>{props.driverName}</div>
+  return <div>{props.name}</div>
 }
 
 export default App;

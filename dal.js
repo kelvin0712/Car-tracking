@@ -19,16 +19,19 @@ exports.searchByName = name =>
 
         return done();
       }
-      const result = await client.query(`
-      SELECT *
-      WHERE drivername like ${name}
-      FROM historyrecord
-    `);
 
-      resolve(result);
+      const { rows } = await client.query(`
+        SELECT *
+        FROM historyrecord
+        WHERE name like '${name}'
+      `);
+
+      resolve(rows);
       done();
     });
   });
+
+exports.searchByName("kelvin").then(console.log);
 
 exports.searchByVehicle = vehicleId =>
   new Promise((resolve, reject) => {
@@ -38,11 +41,11 @@ exports.searchByVehicle = vehicleId =>
 
         return done();
       }
-      const result = await client.query(
-        `SELECT * WHERE vehicleid like ${vehicleId} FROM historyrecord`
+      const { rows } = await client.query(
+        `SELECT * FROM historyrecord WHERE vehicleid like '${vehicleId}' `
       );
 
-      resolve(result);
+      resolve(rows);
       done();
     });
   });

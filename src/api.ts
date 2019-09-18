@@ -1,8 +1,8 @@
 export type HistoryRecord = {
-  driverId: string
-  driverName: string
-  vehicleId: string
-  coordinates: [number, number]
+  id: string
+  name: string
+  vehicleid: string
+  coordinate: [number, number]
   time: Date
 }
 
