@@ -7,9 +7,9 @@ export type HistoryRecord = {
 }
 
 export const searchByName = (name: string): Promise<HistoryRecord[]> => {
-  return fetch(`http://localhost:8080/${name}`).then(res => res.json())
+  return fetch(`http://localhost:8080/drivers/${name}`).then(res => res.json())
 }
 
-export const searchByVehicle = (vehicleId: string): Promise<HistoryRecord[]> => {
-  return fetch(`http://localhost:8080/${vehicleId}`).then(res => res.json())
+export const searchByVehicle = (vehicleid: string): Promise<HistoryRecord[]> => {
+  return fetch(`http://localhost:8080/vehicles/${vehicleid}`).then(res => res.json())
 }

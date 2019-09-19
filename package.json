@@ -16,7 +16,7 @@
     "typescript": "^3.6.3"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "npx concurrently \"npx node-dev --respawn server\" \"react-scripts start\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

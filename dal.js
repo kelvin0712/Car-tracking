@@ -31,7 +31,7 @@ exports.searchByName = name =>
     });
   });
 
-exports.searchByVehicle = vehicleId =>
+exports.searchByVehicle = vehicleid =>
   new Promise((resolve, reject) => {
     pool.connect(async (err, client, done) => {
       if (err) {
@@ -39,9 +39,11 @@ exports.searchByVehicle = vehicleId =>
 
         return done();
       }
-      const { rows } = await client.query(
-        `SELECT * FROM historyrecord WHERE vehicleid like '${vehicleId}' `
-      );
+      const { rows } = await client.query(`
+        SELECT *
+        FROM historyrecord
+        WHERE vehicleid='${vehicleid}'
+      `);
 
       resolve(rows);
       done();
