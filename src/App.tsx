@@ -26,7 +26,7 @@ class App extends React.Component<{}, {
       <div className='vertical-list'>
         <SearchBox onQuery={this.handleOnQuery} />
         <Results historyEntries={this.state.results} />  
-        <Map isMarkerShown  />  
+        <Map isMarkerShown location={this.state.results}  />  
       </div>
     )
   }
@@ -41,7 +41,7 @@ const Results = (props: {
   console.log(props.historyEntries)
 
   return <div>
-    {props.historyEntries.map(entry => <HistoryListItem {...entry} />)}
+    {props.historyEntries.map(entry => <HistoryListItem key={entry.id} {...entry} />)}
   </div>
 }
 
