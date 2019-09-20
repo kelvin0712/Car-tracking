@@ -1,10 +1,11 @@
 import React from "react";
-import { compose, withProps } from 'recompose'
+import { compose, withProps, withStateHandlers } from 'recompose'
 import {
   GoogleMap,
   withGoogleMap,
   withScriptjs,
-  Marker
+  Marker,
+  InfoWindow
 } from "react-google-maps";
 
 const Map = compose(
@@ -15,9 +16,19 @@ const Map = compose(
     containerElement: <div style={{ height: `800px` }} />,
     mapElement: <div style={{ height: `100%` }} />
   }),
+  withStateHandlers(() => ({
+    points: null,
+  }), {
+    onToggleOpen: ({ points }) => (point) => ({
+      points: point,
+    }),
+    clearState: ({ points }) => () => ({
+      points: null,
+    })
+  }),
   withScriptjs,
   withGoogleMap
-)(props => (
+)((props) => (
   <GoogleMap
     defaultZoom={8}
     defaultCenter={{ lat: -37.813629, lng: 144.963058 }}
@@ -26,9 +37,16 @@ const Map = compose(
       props.location.map(point => (
         <Marker
           key={point.id}
-          position={{ lat: point.coordinate.x, lng: point.coordinate.y }}
-        />
+          position={{ lat: point.coordinate.x, lng: point.coordinate.y }} 
+          onClick={() => props.onToggleOpen(point)}
+        > 
+         {props.points && <InfoWindow position={{lat: props.points.coordinate.x , lng:props.points.coordinate.y}} onCloseClick={props.clearState}>
+           <p>name: {props.points.name}, vehicle id: {props.points.vehicleid}</p>
+         </InfoWindow>} 
+        </Marker>
       ))}
+
+    
   </GoogleMap>
 ));
 

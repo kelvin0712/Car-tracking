@@ -26,7 +26,7 @@ class App extends React.Component<{}, {
     const { value } = event.target
     if (value === this.state.mode) return
 
-    this.setState({ mode: value })
+    this.setState({ mode: value, results: [] })
   }
 
   renderSwitch = () => {
