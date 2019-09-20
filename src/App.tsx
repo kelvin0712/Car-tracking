@@ -11,11 +11,11 @@ class App extends React.Component<{}, {
 }>{
   state = {
     results: [],
-    mode: 'driver' as const
+    mode: 'Driver' as const
   }
 
   handleOnQuery = async (query: string) => {
-    const search = this.state.mode === 'driver'
+    const search = this.state.mode === 'Driver'
       ? searchByName
       : searchByVehicle
 
@@ -32,21 +32,24 @@ class App extends React.Component<{}, {
   renderSwitch = () => {
     const MODE = 'mode'
     const modes = [
-      { value: 'driver', label: 'driver' },
-      { value: 'vehicle', label: 'vehicle id' }
+      { value: 'Driver', label: 'Driver' },
+      { value: 'Vehicle', label: 'Vehicle Id' }
     ] as const
 
     return modes.map(
-      ({ value, label }) => <label key={value}>
-        <input
-          onChange={this.handleSwitchQueryMode}
-          type='radio'
-          name={MODE}
-          value={value}
-          checked={value === this.state.mode}
-        />
-        {label}
-      </label>
+      ({ value, label }) => 
+      <div style={{ display: "inline"}}>
+          <label key={value}>
+          <input
+            onChange={this.handleSwitchQueryMode}
+            type='radio'
+            name={MODE}
+            value={value}
+            checked={value === this.state.mode}
+          />
+          {label}
+        </label>
+      </div>
     )
   }
 
@@ -55,7 +58,7 @@ class App extends React.Component<{}, {
       <div className='vertical-list'>
         <SearchBox key={this.state.mode} onQuery={this.handleOnQuery} />
         {this.renderSwitch()}
-        <Results historyEntries={this.state.results} />
+        {/* <Results historyEntries={this.state.results} /> */}
         <Map isMarkerShown location={this.state.results}  />
       </div>
     )

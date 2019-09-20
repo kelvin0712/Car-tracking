@@ -13,7 +13,7 @@ const Map = compose(
     googleMapURL:
       "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=AIzaSyAKaM2rADsPmZOD6HMxCqmzJYkOPOAbhWY",
     loadingElement: <div style={{ height: `100%` }} />,
-    containerElement: <div style={{ height: `800px` }} />,
+    containerElement: <div style={{ height: `650px` }} />,
     mapElement: <div style={{ height: `100%` }} />
   }),
   withStateHandlers(() => ({
