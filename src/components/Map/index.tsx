@@ -33,7 +33,7 @@ class Map extends React.Component<{
       position={{ lat: record.coordinate.x, lng: record.coordinate.y }}
       onCloseClick={() => this.handleToggle()} // set to undefined
     >
-      <p>name: {record.firstName}, vehicle id: {record.vehicleRegId}</p>
+      <p>Name: <strong>{record.firstName}</strong>, Vehicle Id: <strong>{record.vehicleRegId}</strong></p>
     </InfoWindow>
   }
 

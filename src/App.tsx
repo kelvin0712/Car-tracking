@@ -44,7 +44,7 @@ class App extends React.Component<{}>{
 
     return modes.map(
       ({ value, label }) =>
-        <div key={value}>
+        <div key={value} style={{paddingLeft: "1rem"}}>
           <label>
           <input
             onChange={this.handleSwitchQueryMode}

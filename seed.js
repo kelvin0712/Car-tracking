@@ -11,7 +11,8 @@ const DDL = `
   CREATE TABLE ${exports.DRIVER} (
     id SERIAL PRIMARY KEY,
     first_name TEXT NOT NULL,
-    last_name TEXT NOT NULL
+    last_name TEXT NOT NULL,
+    last_login DATE NOT NULL
   );
 
   CREATE TABLE ${exports.VEHICLE} (
@@ -45,7 +46,8 @@ const drivers = Array(DRIVERS)
   .fill(null)
   .map(() => ({
     firstName: faker.name.firstName(),
-    lastName: faker.name.lastName()
+    lastName: faker.name.lastName(),
+    lastLogin: "2019-09-22"
   }));
 
 const vehicles = Array(VEHICLES)
@@ -79,9 +81,12 @@ const history = Array(RECORDS)
 
 const DATA = `
   INSERT INTO ${exports.DRIVER}
-    (first_name, last_name)
+    (first_name, last_name, last_login)
   VALUES ${drivers
-    .map(driver => `('${driver.firstName}', '${driver.lastName}')`)
+    .map(
+      driver =>
+        `('${driver.firstName}', '${driver.lastName}', '${driver.lastLogin}')`
+    )
     .join(",")};
 
   INSERT INTO ${exports.VEHICLE}

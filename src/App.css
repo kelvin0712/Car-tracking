@@ -6,6 +6,7 @@
 
 .container--horizontal {
   display: flex;
+  background-image: linear-gradient(to right top, #e9ebf0, #e4ecf4, #ddeef5, #d6eff3, #d1f1ee);
 }
 
 .results--map {
@@ -18,6 +19,7 @@ aside {
 }
 
 .results--list {
-  padding: 2rem;
+  padding-left: .5rem;
+  padding-top: 1rem;
   overflow-y: scroll;
 }

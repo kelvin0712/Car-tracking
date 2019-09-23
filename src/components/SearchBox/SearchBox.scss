@@ -1,12 +1,13 @@
 .SearchBox {
   display: flex;
   align-self: stretch;
-
+  padding-left: 1rem;
+  padding-top: 1rem;
   input[type=text] {
     padding: 8px;
     font-size: 13px;
     border: 1px solid grey;
-    width: 30%;
+    width: 50%;
     background: #f1f1f1;
     text-align: center;
   }

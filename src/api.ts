@@ -1,6 +1,7 @@
 export type HistoryRecord = {
   id: number
   coordinate: { x: number, y: number }
+  lastName: string
   firstName: string
   vehicleRegId: string
   vehicleType: string
