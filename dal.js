@@ -1,3 +1,5 @@
+// data access layer
+
 const pg = require("pg");
 const config = {
   user: "postgres",
@@ -11,6 +13,15 @@ const pool = new pg.Pool(config);
 // pool shutdown
 // pool.end()
 
+const FIELDS = `
+  location_history.id as id,
+  first_name as "firstName",
+  last_name as "lastName",
+  reg as "vehicleRegId",
+  type as "vehicleType",
+  coordinate
+`;
+
 exports.searchByName = name =>
   new Promise((resolve, reject) => {
     pool.connect(async (err, client, done) => {
@@ -21,9 +32,18 @@ exports.searchByName = name =>
       }
 
       const { rows } = await client.query(`
-        SELECT *
-        FROM historyrecord
-        WHERE name like '${name}'
+        SELECT ${FIELDS}
+        FROM location_history
+        JOIN driver ON driver_id = driver.id
+        JOIN vehicle ON vehicle_reg = reg
+        ${
+          name
+            ? `WHERE
+              first_name like '${name}' OR
+              last_name like '${name}'
+            `
+            : ""
+        }
       `);
 
       resolve(rows);
@@ -31,7 +51,7 @@ exports.searchByName = name =>
     });
   });
 
-exports.searchByVehicle = vehicleid =>
+exports.searchByVehicle = vehicleId =>
   new Promise((resolve, reject) => {
     pool.connect(async (err, client, done) => {
       if (err) {
@@ -39,10 +59,13 @@ exports.searchByVehicle = vehicleid =>
 
         return done();
       }
+
       const { rows } = await client.query(`
-        SELECT *
-        FROM historyrecord
-        WHERE vehicleid='${vehicleid}'
+        SELECT ${FIELDS}
+        FROM location_history
+        JOIN driver ON driver_id = driver.id
+        JOIN vehicle ON vehicle_reg = reg
+        ${vehicleId ? `WHERE reg = '${vehicleId}'` : ""}
       `);
 
       resolve(rows);

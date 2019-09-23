@@ -1,8 +1,23 @@
-body {
-    font-family: 'Open Sans Condensed';
+.container--vertical {
+  display: flex;
+  flex-direction: column;
+  max-height: 100vh;
 }
 
-.vertical-list {
-    text-align: center;
+.container--horizontal {
+  display: flex;
 }
 
+.results--map {
+  flex: 1;
+}
+
+aside {
+  width: 30%;
+  max-width: 16rem;
+}
+
+.results--list {
+  padding: 2rem;
+  overflow-y: scroll;
+}

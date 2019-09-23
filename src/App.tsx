@@ -1,20 +1,21 @@
 import React from 'react';
 import SearchBox from './components/SearchBox';
 import Map from './components/Map';
+import ResultList from './components/ResultList';
 
 import './App.css';
 import { searchByName, searchByVehicle, HistoryRecord } from './api';
 
-class App extends React.Component<{}, {
-  results: HistoryRecord[]
-  mode: string
-}>{
+class App extends React.Component<{}>{
   state = {
     results: [],
     mode: 'Driver' as const
+  } as {
+    results: HistoryRecord[]
+    mode: string
   }
 
-  handleOnQuery = async (query: string) => {
+  handleOnQuery = async (query: string = '') => {
     const search = this.state.mode === 'Driver'
       ? searchByName
       : searchByVehicle
@@ -29,6 +30,11 @@ class App extends React.Component<{}, {
     this.setState({ mode: value, results: [] })
   }
 
+  componentDidMount() {
+    this.handleOnQuery()
+    // query for everything
+  }
+
   renderSwitch = () => {
     const MODE = 'mode'
     const modes = [
@@ -37,9 +43,9 @@ class App extends React.Component<{}, {
     ] as const
 
     return modes.map(
-      ({ value, label }) => 
-      <div style={{ display: "inline"}}>
-          <label key={value}>
+      ({ value, label }) =>
+        <div key={value}>
+          <label>
           <input
             onChange={this.handleSwitchQueryMode}
             type='radio'
@@ -55,34 +61,20 @@ class App extends React.Component<{}, {
 
   render() {
     return (
-      <div className='vertical-list'>
-        <SearchBox key={this.state.mode} onQuery={this.handleOnQuery} />
-        {this.renderSwitch()}
-        {/* <Results historyEntries={this.state.results} /> */}
-        <Map isMarkerShown location={this.state.results}  />
+      <div className='container--horizontal'>
+        <aside className='container--vertical'>
+          <SearchBox key={this.state.mode} onQuery={this.handleOnQuery} />
+          {this.renderSwitch()}
+          <div className='results--list'>
+            <ResultList historyRecords={this.state.results} />
+          </div>
+        </aside>
+        <div className='results--map'>
+          <Map historyRecords={this.state.results}  />
+        </div>
       </div>
     )
   }
-}
-
-/**
- * Display list of history event
- * @params historyEntries an array of history events
- */
-const Results = (props: {
-  historyEntries: HistoryRecord[]
-}) => {
-  console.log(props.historyEntries)
-
-  return <div>
-    {props.historyEntries.map(entry => <HistoryListItem key={entry.id} {...entry} />)}
-  </div>
-}
-
-const HistoryListItem = (props: HistoryRecord) => {
-  return <div>
-    <p> Driver Name: {props.name}</p>
-  </div>
 }
 
 export default App;

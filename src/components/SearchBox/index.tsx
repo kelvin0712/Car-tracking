@@ -13,10 +13,10 @@ export default class SearchBox extends React.Component<{
 
   render() {
     return (
-    <div className='horizontal-layout'>
-      <input type="text" ref={this.inputRef} />
-      <button onClick={this.handleOnClick}>SEARCH</button>
-    </div>
+      <div className='SearchBox'>
+        <input type="text" ref={this.inputRef} />
+        <button onClick={this.handleOnClick}>SEARCH</button>
+      </div>
     )
   }
 }

@@ -5,7 +5,7 @@ const app = express();
 
 app.use(cors());
 
-app.get("/drivers/:name", async (req, res, next) => {
+app.get("/drivers/:name*?", async (req, res, next) => {
   try {
     res.json(await searchByName(req.params.name));
   } catch (error) {
@@ -13,7 +13,7 @@ app.get("/drivers/:name", async (req, res, next) => {
   }
 });
 
-app.get("/vehicles/:id", async (req, res, next) => {
+app.get("/vehicles/:id*?", async (req, res, next) => {
   try {
     res.json(await searchByVehicle(req.params.id));
   } catch (error) {
