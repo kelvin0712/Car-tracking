@@ -17,7 +17,7 @@ class Map extends React.Component<{
   state = {} as { focusedId?: number }
 
   /**
-   * Handle toggle of map
+   * Toggle focusedId value in the local state 
    */
   handleToggle = (id: number) => {
     let focusedId: number | undefined = id

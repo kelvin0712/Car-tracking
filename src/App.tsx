@@ -96,6 +96,9 @@ class App extends React.Component<{}, State>{
     )
   }
 
+  /**
+   * Handle toggle button to show the current location of the driver 
+   */
   handleToggleCurrent = () => {
     this.setState(state => (
       { showCurrentOnMap: !state.showCurrentOnMap }
