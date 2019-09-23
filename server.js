@@ -1,3 +1,6 @@
+// Populate database with random data
+require("./seed");
+
 const { searchByName, searchByVehicle } = require("./dal");
 const express = require("express");
 const cors = require("cors");

@@ -6,6 +6,9 @@ export default class SearchBox extends React.Component<{
 }> {
   inputRef = React.createRef<HTMLInputElement>()
 
+  /**
+   * Handle on click of search box
+   */
   handleOnClick = () => {
     const { current } = this.inputRef
     if (current) this.props.onQuery(current.value)

@@ -10,28 +10,34 @@ import {
 import { HistoryRecord } from "../../api";
 
 class Map extends React.Component<{
+  markerForId?: number,
   historyRecords: HistoryRecord[]
 }> {
   // index of location which has the current InfoWindow
-  state = {} as { focusedIndex?: number }
+  state = {} as { focusedId?: number }
 
-  handleToggle = (index?: number) => {
-    let focusedIndex = index
-    if (index === this.state.focusedIndex) {
-      focusedIndex = undefined
+  /**
+   * Handle toggle of map
+   */
+  handleToggle = (id: number) => {
+    let focusedId: number | undefined = id
+    if (id === this.state.focusedId) {
+      focusedId = undefined
     }
 
-    this.setState({ focusedIndex })
+    this.setState({ focusedId })
   }
 
-  renderDetails = () => {
-    if (this.state.focusedIndex === undefined) return null
-
-    const record = this.props.historyRecords[this.state.focusedIndex]
+  /**
+   * Render an information window of a driver when the marker is clicked 
+   */
+  renderDetails = (id: number) => {
+    const record = this.props.historyRecords.find(_ => id === _.id)
+    if (!record) return null
 
     return <InfoWindow
       position={{ lat: record.coordinate.x, lng: record.coordinate.y }}
-      onCloseClick={() => this.handleToggle()} // set to undefined
+      onCloseClick={() => this.handleToggle(id)} // set to undefined
     >
       <p>Name: <strong>{record.firstName}</strong>, Vehicle Id: <strong>{record.vehicleRegId}</strong></p>
     </InfoWindow>
@@ -42,15 +48,19 @@ class Map extends React.Component<{
       defaultZoom={12}
       defaultCenter={{ lat: -37.813629, lng: 144.963058 }}
     >
-      {this.props.historyRecords.map((point, index) =>
-        <Marker
-          key={point.id}
-          position={{ lat: point.coordinate.x, lng: point.coordinate.y }}
-          onClick={() => this.handleToggle(index)}
+      {this.props.historyRecords.map(record => {
+        const { id } = record
+
+        return <Marker
+          key={id}
+          position={{ lat: record.coordinate.x, lng: record.coordinate.y }}
+          onClick={() => this.handleToggle(id)}
         >
-          {this.state.focusedIndex === index ? this.renderDetails() : null}
+          {(this.state.focusedId === id) || (this.props.markerForId === id)
+            ? this.renderDetails(id)
+            : null}
         </Marker>
-      )}
+      })}
     </GoogleMap>
   }
 }
@@ -64,3 +74,4 @@ export default Object.assign(
     mapElement: <div style={{ height: `100%` }} />
   }
 })
+

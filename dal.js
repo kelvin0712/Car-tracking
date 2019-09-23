@@ -8,67 +8,75 @@ const config = {
   port: 5432
 };
 
-const pool = new pg.Pool(config);
+const CONN_POOL = new pg.Pool(config);
+const Tables = {
+  History: "location_history",
+  Vehicle: "vehicle",
+  Driver: "driver"
+};
 
 // pool shutdown
 // pool.end()
 
 const FIELDS = `
-  location_history.id as id,
-  first_name as "firstName",
-  last_name as "lastName",
-  reg as "vehicleRegId",
-  type as "vehicleType",
+  location_history.id AS id,
+  first_name AS "firstName",
+  last_name AS "lastName",
+  check_in AS "checkedInTimeStamp",
+  reg AS "vehicleRegId",
+  type AS "vehicleType",
   coordinate
 `;
 
-exports.searchByName = name =>
-  new Promise((resolve, reject) => {
-    pool.connect(async (err, client, done) => {
-      if (err) {
-        reject(err);
+const JOIN_QUERY = `
+  SELECT ${FIELDS}
+  FROM ${Tables.History}
+  JOIN driver ON driver_id = driver.id
+  JOIN vehicle ON vehicle_reg = reg
+`;
 
-        return done();
+const query = async sql =>
+  new Promise((resolve, reject) => {
+    CONN_POOL.connect(async (err, client, done) => {
+      if (err) {
+        return reject(err);
       }
 
-      const { rows } = await client.query(`
-        SELECT ${FIELDS}
-        FROM location_history
-        JOIN driver ON driver_id = driver.id
-        JOIN vehicle ON vehicle_reg = reg
-        ${
-          name
-            ? `WHERE
-              first_name like '${name}' OR
-              last_name like '${name}'
-            `
-            : ""
-        }
-      `);
-
-      resolve(rows);
-      done();
+      try {
+        const { rows } = await client.query(sql);
+        resolve(rows);
+      } catch (err) {
+        reject(err);
+      } finally {
+        done(true);
+      }
     });
   });
 
-exports.searchByVehicle = vehicleId =>
-  new Promise((resolve, reject) => {
-    pool.connect(async (err, client, done) => {
-      if (err) {
-        reject(err);
+const searchByName = name =>
+  query(`
+  ${JOIN_QUERY}
+  ${
+    name
+      ? `WHERE
+        first_name = '${name}' OR
+        last_name = '${name}'
+      `
+      : ""
+  }
+  ORDER BY check_in DESC
+`);
 
-        return done();
-      }
+const searchByVehicle = vehicleId =>
+  query(`
+  ${JOIN_QUERY}
+  ${vehicleId ? `WHERE reg = '${vehicleId}'` : ""}
+  ORDER BY check_in DESC
+`);
 
-      const { rows } = await client.query(`
-        SELECT ${FIELDS}
-        FROM location_history
-        JOIN driver ON driver_id = driver.id
-        JOIN vehicle ON vehicle_reg = reg
-        ${vehicleId ? `WHERE reg = '${vehicleId}'` : ""}
-      `);
-
-      resolve(rows);
-      done();
-    });
-  });
+module.exports = {
+  searchByVehicle,
+  searchByName,
+  Tables,
+  query
+};
