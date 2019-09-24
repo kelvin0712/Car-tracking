@@ -35,11 +35,14 @@ class Map extends React.Component<{
     const record = this.props.historyRecords.find(_ => id === _.id)
     if (!record) return null
 
+    const date = new Date(record.checkedInTimeStamp)
+
     return <InfoWindow
       position={{ lat: record.coordinate.x, lng: record.coordinate.y }}
       onCloseClick={() => this.handleToggle(id)} // set to undefined
     >
-      <p>Name: <strong>{record.firstName}</strong>, Vehicle Id: <strong>{record.vehicleRegId}</strong></p>
+      <p>Name: <strong>{record.firstName}</strong>, Vehicle Id: <strong>{record.vehicleRegId}</strong>, Last check-in: <strong>{date.getDate()}/{date.getMonth()} -
+        {date.getHours()}:{date.getMinutes()}</strong></p>
     </InfoWindow>
   }
 
